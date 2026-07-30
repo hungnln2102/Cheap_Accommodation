@@ -1,0 +1,145 @@
+.review-form {
+  padding: 1.5rem;
+  background: var(--bg-input);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+.review-form__title {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+.review-form__rating {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.review-form__rating-text {
+  font-size: 0.875rem;
+  color: var(--color-accent-600);
+  font-weight: 600;
+}
+.review-form__field { margin-bottom: 1rem; }
+.review-form__label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.375rem;
+}
+.review-form__input,
+.review-form__textarea {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  color: var(--text-body);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  resize: vertical;
+}
+.review-form__input::placeholder,
+.review-form__textarea::placeholder {
+  color: var(--color-gray-400);
+}
+.review-form__input:focus,
+.review-form__textarea:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+}
+.review-form__submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.5rem;
+  background: var(--gradient-cta);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: var(--transition-normal);
+}
+.review-form__submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(20, 184, 166, 0.4);
+}
+.review-form__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.review-form-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.review-form__user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.review-form__user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.review-form__user-name {
+  font-size: 0.875rem;
+  color: var(--text-body);
+}
+
+/* Glassmorphic login overlay */
+.review-form__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+.dark .review-form__overlay {
+  background: rgba(24, 24, 27, 0.5);
+}
+.review-form__overlay:hover {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.45);
+}
+.dark .review-form__overlay:hover {
+  background: rgba(24, 24, 27, 0.55);
+}
+
+.review-form__overlay-btn {
+  padding: 0.75rem 1.5rem;
+  background: var(--gradient-cta);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.review-form__overlay:hover .review-form__overlay-btn {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(20, 184, 166, 0.35);
+}
+

@@ -1,0 +1,141 @@
+services:
+  # Domain: room.mavrykpremium.com -> 8082 (frontend)
+  #         roomapi.mavrykpremium.com -> 3002 (backend)
+  # ==========================================
+  # 1. DATABASE SERVICE (PostgreSQL — DB MỚI, tách biệt admin_orderlist)
+  # ==========================================
+  postgres:
+    container_name: cheap_accom-postgres
+    build:
+      context: ./database
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-accom_admin}
+      POSTGRES_PASSWORD: ${DB_PASS:-change_me}
+      POSTGRES_DB: ${DB_NAME:-cheap_accom_db}
+    volumes:
+      - cheap_accom_postgres_data:/var/lib/postgresql/data
+    ports:
+      # Dùng port 5433 để tránh xung đột với admin_orderlist (5432).
+      # Production: chỉ cho truy cập từ localhost host machine, không public ra Internet.
+      - "127.0.0.1:5433:5432"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U \"${DB_USER:-accom_admin}\" -d \"${DB_NAME:-cheap_accom_db}\""]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 90s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+
+  # ==========================================
+  # 2. REDIS SERVICE (Session + Cache)
+  # ==========================================
+  redis:
+    container_name: cheap_accom-redis
+    image: redis:7-alpine
+    restart: always
+    command: ["redis-server", "--maxmemory", "128mb", "--maxmemory-policy", "noeviction"]
+    volumes:
+      - cheap_accom_redis_data:/data
+    ports:
+      # Dùng port 6380 để tránh xung đột với admin_orderlist (6379).
+      - "127.0.0.1:6380:6379"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.5'
+
+  # ==========================================
+  # 3. BACKEND SERVICE (Node.js)
+  # ==========================================
+  backend:
+    container_name: cheap_accom-backend
+    build:
+      context: ./backend
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - ./backend/.env.docker
+    environment:
+      APP_ENV: docker
+      NODE_ENV: production
+    ports:
+      # Dùng port 3002 để tránh xung đột với admin_orderlist (3001).
+      - "127.0.0.1:3002:3002"
+    volumes:
+      - ./backend/uploads:/app/uploads
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:3002/api/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+
+  # ==========================================
+  # 4. FRONTEND SERVICE (React/Next.js/Vite)
+  # ==========================================
+  frontend:
+    container_name: cheap_accom-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://roomapi.mavrykpremium.com}
+    restart: always
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      # Dùng port 8082 để tránh xung đột với admin_orderlist (8081).
+      - "127.0.0.1:8082:80"
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.5'
+
+# ==========================================
+# Host Nginx (Unified — cùng VPS admin_orderlist):
+#   room.mavrykpremium.com     -> 8082 (frontend)
+#   roomapi.mavrykpremium.com  -> 3002 (backend)
+# Xem: nginx/conf.d/cheap-accommodation.conf
+# ==========================================
+
+# ==========================================
+# NETWORKS & VOLUMES
+# ==========================================
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  cheap_accom_postgres_data:
+  cheap_accom_redis_data:

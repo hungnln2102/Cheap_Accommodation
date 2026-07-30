@@ -1,0 +1,44 @@
+# Cheap_Accommodation — .gitignore
+
+# Environment files — KHÔNG commit lên Git
+.env
+.env.local
+.env.docker
+.env.production
+.env.staging
+backend/.env
+backend/.env.local
+backend/.env.docker
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+frontend/dist/
+frontend/.vite/
+backend/dist/
+
+# Uploads & media (serve static từ server, không commit)
+backend/uploads/
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Docker volumes (nếu bind mount local)
+.docker-data/
+
+# Temp
+*.tmp
+*.bak

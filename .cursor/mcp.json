@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "cheap-accommodation-skills-fs": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "../.agents",
+        ".agents"
+      ]
+    }
+  }
+}

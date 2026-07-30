@@ -1,0 +1,45 @@
+# Chỉ Redis + Postgres cho dev local.
+# Dùng khi phát triển backend mà không cần chạy full Docker stack.
+#
+#   docker compose -f docker-compose.local-dev.yml up -d
+#
+# Port offset để tránh xung đột với admin_orderlist:
+#   Redis:    6380 (admin_orderlist: 6379)
+#   Postgres: 5433 (admin_orderlist: 5432)
+
+name: cheap-accom-local
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cheap_accom-postgres-dev
+    environment:
+      POSTGRES_USER: accom_admin
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: cheap_accom_db
+    ports:
+      - "${POSTGRES_DEV_PORT:-5433}:5432"
+    volumes:
+      - cheap_accom_postgres_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U accom_admin -d cheap_accom_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: cheap_accom-redis-dev
+    command: ["redis-server", "--maxmemory", "128mb", "--maxmemory-policy", "allkeys-lru"]
+    ports:
+      - "${REDIS_DEV_PORT:-6380}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  cheap_accom_postgres_dev_data:
