@@ -5,7 +5,7 @@ import {
   Building, Banknote, Phone, MessageCircle, Clock, Star, Shield,
   ChevronUp, Zap, Droplets, Wifi, X, Grid, Check, Info
 } from 'lucide-react'
-import { rooms, formatPrice, AMENITY_ICONS, timeAgo } from '../data/mockData'
+import { rooms, formatPrice, AMENITY_ICONS, AMENITY_LABELS, timeAgo } from '../data/mockData'
 import { useAuth } from '../context/AuthContext'
 import StarRating from '../components/review/StarRating'
 import RatingBadge from '../components/review/RatingBadge'
@@ -231,7 +231,7 @@ export default function RoomDetailPage() {
               {room.amenities.map(a => (
                 <div key={a} className="detail__amenity">
                   <span className="detail__amenity-icon">{AMENITY_ICONS[a]}</span>
-                  <span className="detail__amenity-label">{a.replace(/-/g, ' ')}</span>
+                  <span className="detail__amenity-label">{AMENITY_LABELS[a]}</span>
                 </div>
               ))}
             </div>

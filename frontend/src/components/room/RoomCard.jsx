@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { MapPin, Maximize2, Star, Heart } from 'lucide-react'
-import { formatPrice, AMENITY_ICONS } from '../../data/mockData'
+import { formatPrice, AMENITY_ICONS, AMENITY_LABELS } from '../../data/mockData'
 import { useAuth } from '../../context/AuthContext'
 import RatingBadge from '../review/RatingBadge'
 import './RoomCard.css'
@@ -53,7 +53,7 @@ export default function RoomCard({ room, index = 0 }) {
 
         <div className="room-card__amenities">
           {room.amenities.slice(0, 4).map(a => (
-            <span key={a} className="room-card__amenity" title={a}>{AMENITY_ICONS[a]}</span>
+            <span key={a} className="room-card__amenity" title={AMENITY_LABELS[a]}>{AMENITY_ICONS[a]}</span>
           ))}
           {room.amenities.length > 4 && (
             <span className="room-card__amenity room-card__amenity--more">+{room.amenities.length - 4}</span>

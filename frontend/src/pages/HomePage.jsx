@@ -3,6 +3,7 @@ import { Search, TrendingUp } from 'lucide-react'
 import { rooms, PRICE_RANGES } from '../data/mockData'
 import FilterBar from '../components/filter/FilterBar'
 import RoomCard from '../components/room/RoomCard'
+import PropertyMap from '../components/map/PropertyMap'
 import './HomePage.css'
 
 const TAGS = [
@@ -142,6 +143,11 @@ export default function HomePage() {
             <TrendingUp size={22} /> {getListingTitle()}
           </h2>
           <span className="listing__count">{processedRooms.length} kết quả</span>
+        </div>
+
+        {/* Map Section */}
+        <div className="listing__map animate-fade-in" style={{ animationDelay: '200ms', marginBottom: '32px' }}>
+          <PropertyMap rooms={processedRooms} />
         </div>
 
         <div className="listing__grid">

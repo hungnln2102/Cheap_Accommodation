@@ -1,0 +1,205 @@
+.property-map-wrapper {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 1; /* Để bản đồ nằm dưới các dropdown/modal nếu có */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.property-map-wrapper.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999;
+  border-radius: 0;
+}
+
+.property-map-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Custom Marker - Viên thuốc giống hifriendz */
+.custom-map-marker {
+  background: transparent;
+  border: none;
+}
+
+.custom-map-marker div {
+  background-color: #008080; /* Màu xanh ngọc (teal) */
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+  transform: translate(-50%, -50%); /* Căn giữa marker */
+  display: inline-block;
+  cursor: pointer;
+  border: 2px solid white;
+  transition: all 0.2s ease;
+}
+
+.custom-map-marker div:hover {
+  background-color: #006666;
+  z-index: 1000 !important;
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* Nút Toàn màn hình góc phải */
+.custom-fullscreen-control {
+  margin-top: 10px !important;
+  margin-right: 10px !important;
+  clear: none !important;
+}
+
+.custom-fullscreen-control button {
+  background-color: rgba(90, 100, 95, 0.9) !important;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px !important;
+  border: none;
+  border-radius: 8px !important;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background-color 0.2s;
+  text-decoration: none;
+}
+
+.custom-fullscreen-control button:hover {
+  background-color: rgba(70, 80, 75, 1) !important;
+}
+
+.custom-fullscreen-control button span {
+  font-size: 14px;
+}
+/* Custom Popup Overlay */
+.map-popup-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.map-popup-content {
+  background: white;
+  width: 100%;
+  max-width: 400px;
+  max-height: 90%;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.map-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+  background: #f9f9f9;
+}
+
+.map-popup-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.map-popup-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.map-popup-close:hover {
+  background: #eee;
+  color: #333;
+}
+
+.map-popup-list {
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.map-popup-item {
+  display: flex;
+  gap: 12px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.map-popup-item:hover {
+  background: #f5f5f5;
+}
+
+.map-popup-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.map-popup-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.map-popup-title {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.map-popup-price {
+  margin: 0 0 4px 0;
+  font-size: 15px;
+  font-weight: bold;
+  color: #008080;
+}
+
+.map-popup-address {
+  margin: 0;
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
