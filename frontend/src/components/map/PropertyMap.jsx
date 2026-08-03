@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, ZoomControl } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import L from 'leaflet';
@@ -42,8 +42,6 @@ const FullScreenControl = ({ isFullScreen, toggleFullScreen }) => {
 const PropertyMap = ({ rooms = [] }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [popupRooms, setPopupRooms] = useState(null);
-  const clusterRef = useRef();
-
   const toggleFullScreen = () => {
     setIsFullScreen(!isFullScreen);
     setTimeout(() => {
@@ -51,25 +49,44 @@ const PropertyMap = ({ rooms = [] }) => {
     }, 100);
   };
 
-  useEffect(() => {
-    if (clusterRef.current) {
-      // Unbind previous event to avoid duplicates
-      clusterRef.current.off('clusterclick');
-      clusterRef.current.on('clusterclick', (e) => {
-        const markers = e.layer.getAllChildMarkers();
-        const clusterRooms = markers.map(m => m.options.roomData).filter(Boolean);
-        setPopupRooms(clusterRooms);
-      });
-    }
-  }, [rooms]);
 
   const defaultCenter = [10.80, 106.70];
+
+  const handleClusterClick = (e) => {
+    const map = e.layer._map;
+    if (!map) return;
+
+    const currentZoom = map.getZoom();
+    const maxZoom = map.getMaxZoom();
+
+    if (currentZoom < maxZoom) {
+      setPopupRooms(null);
+      const targetZoom = Math.min(currentZoom + 3, 17, maxZoom);
+      const bounds = e.layer.getBounds();
+      map.flyToBounds(bounds, {
+        animate: true,
+        duration: 0.65,
+        padding: [72, 72],
+        maxZoom: targetZoom,
+      });
+      return;
+    }
+
+    if (typeof e.layer.spiderfy === 'function') {
+      e.layer.spiderfy();
+    }
+
+    const markers = e.layer.getAllChildMarkers();
+    const clusterRooms = markers.map(m => m.options.roomData).filter(Boolean);
+    setPopupRooms(clusterRooms);
+  };
 
   return (
     <div className={`property-map-wrapper ${isFullScreen ? 'fullscreen' : ''}`}>
       <MapContainer 
         center={defaultCenter} 
         zoom={11} 
+        maxZoom={18}
         scrollWheelZoom={true}
         className="property-map-container"
         zoomControl={false}
@@ -82,13 +99,15 @@ const PropertyMap = ({ rooms = [] }) => {
         <ZoomControl position="topleft" />
         <FullScreenControl isFullScreen={isFullScreen} toggleFullScreen={toggleFullScreen} />
 
-        <MarkerClusterGroup
-          ref={clusterRef}
+        <MarkerClusterGroup
           chunkedLoading
           iconCreateFunction={createClusterCustomIcon}
           maxClusterRadius={50}
+          disableClusteringAtZoom={17}
+          spiderfyOnMaxZoom={true}
           showCoverageOnHover={false}
-          zoomToBoundsOnClick={false} // Disable auto zoom on cluster click
+          zoomToBoundsOnClick={false}
+          eventHandlers={{ clusterclick: handleClusterClick }}
         >
           {rooms.map((room) => {
             if (!room.lat || !room.lng) return null;

@@ -1,51 +1,56 @@
-﻿import { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   Activity,
+  ArrowUpRight,
   BarChart3,
   BedDouble,
+  Bell,
   Building2,
   CheckCircle2,
   CircleDollarSign,
   Eye,
+  FileText,
   Home,
-  MapPin,
-  Pencil,
-  Plus,
+  LogOut,
+  Menu,
+  MessageSquare,
   Search,
   Settings,
   ShieldCheck,
-  ToggleLeft,
-  Trash2,
-  Upload,
+  Sparkles,
+  UserRound,
   Users,
+  X,
 } from 'lucide-react'
-import { rooms as initialRooms, formatPrice } from '../../data/mockData'
+import { rooms as initialRooms } from '../../data/mockData'
 import { useAuth } from '../../context/AuthContext'
+import LoginModal from '../../components/auth/LoginModal'
 import './AdminPage.css'
 
 const trafficData = [
-  { label: 'T2', views: 1240 },
-  { label: 'T3', views: 1680 },
-  { label: 'T4', views: 1420 },
-  { label: 'T5', views: 2180 },
-  { label: 'T6', views: 2540 },
-  { label: 'T7', views: 3120 },
-  { label: 'CN', views: 2860 },
+  { day: 'T2', reach: 1240, users: 318, ccu: 14, source: 'Organic', conversion: 3.2 },
+  { day: 'T3', reach: 1680, users: 426, ccu: 19, source: 'Direct', conversion: 3.8 },
+  { day: 'T4', reach: 1420, users: 351, ccu: 16, source: 'Facebook', conversion: 2.9 },
+  { day: 'T5', reach: 2180, users: 512, ccu: 28, source: 'Organic', conversion: 4.4 },
+  { day: 'T6', reach: 2540, users: 640, ccu: 31, source: 'Google Ads', conversion: 4.9 },
+  { day: 'T7', reach: 3120, users: 784, ccu: 42, source: 'Direct', conversion: 5.1 },
+  { day: 'CN', reach: 2860, users: 701, ccu: 37, source: 'Organic', conversion: 4.7 },
 ]
 
-const statusLabels = {
-  available: 'Còn trống',
-  rented: 'Đã thuê',
-  maintenance: 'Bảo trì',
-  hidden: 'Ẩn bài',
-}
+const sourceData = [
+  { label: 'Organic', value: 42, color: '#0f766e' },
+  { label: 'Direct', value: 28, color: '#2563eb' },
+  { label: 'Facebook', value: 18, color: '#7c3aed' },
+  { label: 'Google Ads', value: 12, color: '#d97706' },
+]
 
-const statusOptions = [
-  { value: 'all', label: 'Tất cả trạng thái' },
-  { value: 'available', label: 'Còn trống' },
-  { value: 'rented', label: 'Đã thuê' },
-  { value: 'maintenance', label: 'Bảo trì' },
-  { value: 'hidden', label: 'Ẩn bài' },
+const navItems = [
+  { label: 'Tổng quan', icon: BarChart3, active: true },
+  { label: 'Phòng trọ', icon: BedDouble },
+  { label: 'Khách thuê', icon: Users },
+  { label: 'Hợp đồng', icon: FileText },
+  { label: 'Tin nhắn', icon: MessageSquare },
+  { label: 'Cài đặt', icon: Settings },
 ]
 
 function ProtectedAdmin({ children }) {
@@ -53,239 +58,242 @@ function ProtectedAdmin({ children }) {
 
   if (!user) {
     return (
-      <section className="admin-auth container">
-        <div className="admin-auth__card">
-          <div className="admin-auth__icon"><ShieldCheck size={34} /></div>
-          <span className="admin-auth__eyebrow">Private route</span>
-          <h1>Đăng nhập để vào trang quản lý</h1>
-          <p>
-            Khu vực admin dùng để quản lý phòng trọ, theo dõi lượt truy cập và kiểm soát trạng thái bài đăng.
-          </p>
-          <button className="admin-auth__button" onClick={() => triggerLogin()}>
-            Đăng nhập quản trị
-          </button>
-        </div>
-      </section>
+      <main className="admin-login-page">
+        <section className="admin-login-card">
+          <div className="admin-login-brand">
+            <span>247</span>
+            <div>
+              <strong>TimTro247 Admin</strong>
+              <small>Private operations workspace</small>
+            </div>
+          </div>
+          <div className="admin-login-icon"><ShieldCheck size={34} /></div>
+          <p className="admin-kicker">Khu vực riêng tư</p>
+          <h1>Đăng nhập để quản trị hệ thống</h1>
+          <p className="admin-login-copy">Dashboard này tách biệt khỏi website public, dành cho đội vận hành theo dõi phòng, traffic, user mới và CCU.</p>
+          <button className="admin-primary-btn" onClick={() => triggerLogin()}>Đăng nhập quản trị</button>
+        </section>
+        <LoginModal />
+      </main>
     )
   }
 
   return children
 }
 
-function StatCard({ icon: Icon, label, value, trend, tone = 'primary' }) {
+function MiniSparkline({ data, color = '#0f766e' }) {
+  const width = 128
+  const height = 42
+  const max = Math.max(...data)
+  const min = Math.min(...data)
+  const range = Math.max(max - min, 1)
+  const points = data.map((value, index) => {
+    const x = (index / Math.max(data.length - 1, 1)) * width
+    const y = height - ((value - min) / range) * (height - 8) - 4
+    return x + ',' + y
+  }).join(' ')
+
   return (
-    <article className={`admin-stat admin-stat--${tone}`}>
-      <div className="admin-stat__icon"><Icon size={22} /></div>
-      <div>
-        <span className="admin-stat__label">{label}</span>
-        <strong className="admin-stat__value">{value}</strong>
-        <span className="admin-stat__trend">{trend}</span>
+    <svg className="admin-sparkline" viewBox={'0 0 ' + width + ' ' + height} aria-hidden="true">
+      <polyline points={points} fill="none" stroke={color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function Donut({ value, color = '#0f766e' }) {
+  const radius = 38
+  const circumference = 2 * Math.PI * radius
+  const safeValue = Math.min(Math.max(value, 0), 100)
+  const offset = circumference - (safeValue / 100) * circumference
+
+  return (
+    <div className="admin-small-donut">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r={radius} className="admin-small-donut__track" />
+        <circle cx="50" cy="50" r={radius} className="admin-small-donut__value" stroke={color} strokeDasharray={circumference} strokeDashoffset={offset} />
+      </svg>
+      <strong>{safeValue}%</strong>
+    </div>
+  )
+}
+
+function LineChart({ data }) {
+  const width = 820
+  const height = 300
+  const padX = 44
+  const padY = 34
+  const max = Math.max(...data.map(item => item.reach))
+  const min = Math.min(...data.map(item => item.reach))
+  const range = Math.max(max - min, 1)
+  const points = data.map((item, index) => {
+    const x = padX + (index / Math.max(data.length - 1, 1)) * (width - padX * 2)
+    const y = height - padY - ((item.reach - min) / range) * (height - padY * 2)
+    return { ...item, x, y }
+  })
+  const line = points.map((point, index) => (index === 0 ? 'M ' : 'L ') + point.x + ' ' + point.y).join(' ')
+  const area = line + ' L ' + points[points.length - 1].x + ' ' + (height - padY) + ' L ' + points[0].x + ' ' + (height - padY) + ' Z'
+
+  return (
+    <svg className="admin-line" viewBox={'0 0 ' + width + ' ' + height} role="img" aria-label="Biểu đồ reach theo ngày">
+      <path d={area} className="admin-line__area" />
+      <path d={line} className="admin-line__path" />
+      {points.map(point => (
+        <g key={point.day}>
+          <circle cx={point.x} cy={point.y} r="5" className="admin-line__dot" />
+          <text x={point.x} y={height - 8} textAnchor="middle">{point.day}</text>
+        </g>
+      ))}
+    </svg>
+  )
+}
+
+function SourceDonut({ data }) {
+  const radius = 44
+  const circumference = 2 * Math.PI * radius
+  let cumulative = 0
+
+  return (
+    <div className="admin-source-widget">
+      <div className="admin-source-donut">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <circle cx="60" cy="60" r={radius} className="admin-source-donut__track" />
+          {data.map(item => {
+            const dash = (item.value / 100) * circumference
+            const gap = circumference - dash
+            const offset = -cumulative * circumference / 100
+            cumulative += item.value
+            return <circle key={item.label} cx="60" cy="60" r={radius} stroke={item.color} strokeDasharray={dash + ' ' + gap} strokeDashoffset={offset} className="admin-source-donut__slice" />
+          })}
+        </svg>
+        <div>
+          <strong>100%</strong>
+          <small>Traffic</small>
+        </div>
+      </div>
+      <div className="admin-source-list">
+        {data.map(item => (
+          <span key={item.label}><i style={{ background: item.color }} /> {item.label} <b>{item.value}%</b></span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function StatCard({ icon: Icon, label, value, note, color = '#0f766e', type = 'line', percent = 72, series = [] }) {
+  return (
+    <article className="admin-stat-card">
+      <div className="admin-stat-card__top">
+        <span className="admin-stat-card__icon" style={{ color }}><Icon size={20} /></span>
+        <span className="admin-stat-card__trend"><ArrowUpRight size={14} /> 12.4%</span>
+      </div>
+      <div className="admin-stat-card__body">
+        <p>{label}</p>
+        <strong>{value}</strong>
+        <small>{note}</small>
+      </div>
+      <div className="admin-stat-card__chart">
+        {type === 'donut' ? <Donut value={percent} color={color} /> : <MiniSparkline data={series.length ? series : [12, 16, 14, 22, 19, 28, 25]} color={color} />}
       </div>
     </article>
   )
 }
 
-function AdminPageContent() {
-  const [managedRooms, setManagedRooms] = useState(initialRooms)
-  const [query, setQuery] = useState('')
-  const [statusFilter, setStatusFilter] = useState('all')
-  const [selectedRoomId, setSelectedRoomId] = useState(initialRooms[0]?.id ?? null)
+function AdminDashboard() {
+  const { user, logout } = useAuth()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const rooms = initialRooms
 
   const stats = useMemo(() => {
-    const totalRooms = managedRooms.length
-    const availableRooms = managedRooms.filter(room => room.status === 'available').length
-    const rentedRooms = managedRooms.filter(room => room.status === 'rented').length
-    const totalReach = managedRooms.reduce((sum, room) => sum + room.reviewCount * 43 + Math.round(room.rating * 120), 0)
-    const averageRent = Math.round(managedRooms.reduce((sum, room) => sum + room.price, 0) / Math.max(totalRooms, 1))
+    const totalRooms = rooms.length
+    const rentedRooms = rooms.filter(room => room.status === 'rented').length
+    const newRooms = rooms.filter(room => {
+      const updatedAt = new Date(room.updatedAt || room.postedAt)
+      return (Date.now() - updatedAt.getTime()) / (1000 * 60 * 60 * 24) <= 30
+    }).length
+    const reach = rooms.reduce((sum, room) => sum + room.reviewCount * 43 + Math.round(room.rating * 120), 0)
+    const newUsers = trafficData.reduce((sum, item) => sum + item.users, 0)
+    const ccu = trafficData[trafficData.length - 1].ccu
+    const rentedRate = Math.round((rentedRooms / Math.max(totalRooms, 1)) * 100)
 
-    return { totalRooms, availableRooms, rentedRooms, totalReach, averageRent }
-  }, [managedRooms])
-
-  const filteredRooms = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase()
-
-    return managedRooms.filter(room => {
-      const matchesStatus = statusFilter === 'all' || room.status === statusFilter
-      const matchesQuery = !normalizedQuery ||
-        room.title.toLowerCase().includes(normalizedQuery) ||
-        room.address.toLowerCase().includes(normalizedQuery)
-
-      return matchesStatus && matchesQuery
-    })
-  }, [managedRooms, query, statusFilter])
-
-  const selectedRoom = managedRooms.find(room => room.id === selectedRoomId) ?? managedRooms[0]
-  const maxViews = Math.max(...trafficData.map(item => item.views))
-
-  const toggleRoomStatus = (roomId) => {
-    setManagedRooms(prev => prev.map(room => {
-      if (room.id !== roomId) return room
-      return { ...room, status: room.status === 'available' ? 'rented' : 'available' }
-    }))
-  }
-
-  const hideRoom = (roomId) => {
-    setManagedRooms(prev => prev.map(room => room.id === roomId ? { ...room, status: 'hidden' } : room))
-  }
+    return { totalRooms, rentedRooms, newRooms, reach, newUsers, ccu, rentedRate }
+  }, [rooms])
 
   return (
-    <div className="admin-page">
-      <section className="admin-hero">
-        <div className="container admin-hero__inner">
+    <div className="admin-app">
+      <aside className={sidebarOpen ? 'admin-aside admin-aside--open' : 'admin-aside'}>
+        <div className="admin-logo"><span>247</span><div><strong>TimTro247</strong><small>Admin Console</small></div></div>
+        <nav className="admin-menu">
+          {navItems.map(item => {
+            const Icon = item.icon
+            return <button key={item.label} className={item.active ? 'is-active' : ''}><Icon size={18} /> {item.label}</button>
+          })}
+        </nav>
+        <div className="admin-aside-card"><Sparkles size={18} /><span>Private dashboard cho đội vận hành.</span></div>
+      </aside>
+
+      <section className="admin-panel">
+        <header className="admin-header">
+          <button className="admin-mobile-menu" onClick={() => setSidebarOpen(true)} aria-label="Mở menu"><Menu size={20} /></button>
           <div>
-            <span className="admin-hero__eyebrow"><ShieldCheck size={16} /> Admin Dashboard</span>
-            <h1>Trung tâm quản lý phòng trọ</h1>
-            <p>Kiểm soát bài đăng, theo dõi phòng trống, traffic và người dùng online theo roadmap trong docs.</p>
+            <p className="admin-kicker">Dashboard</p>
+            <h1>Tổng quan vận hành</h1>
           </div>
-          <div className="admin-hero__actions">
-            <button className="admin-button admin-button--ghost"><Settings size={17} /> Cài đặt</button>
-            <button className="admin-button"><Plus size={17} /> Thêm phòng</button>
+          <div className="admin-header-actions">
+            <label className="admin-search"><Search size={16} /><input placeholder="Tìm phòng, khách thuê..." /></label>
+            <button className="admin-header-icon"><Bell size={18} /></button>
+            <div className="admin-profile"><img src={user.avatar} alt={user.name} /><span>{user.name}</span></div>
+            <button className="admin-logout" onClick={logout}><LogOut size={16} /> Đăng xuất</button>
           </div>
-        </div>
-      </section>
+        </header>
 
-      <section className="container admin-content">
-        <div className="admin-stats">
-          <StatCard icon={Building2} label="Tổng số phòng" value={stats.totalRooms} trend="Đang quản lý" />
-          <StatCard icon={CheckCircle2} label="Phòng còn trống" value={stats.availableRooms} trend={`${stats.rentedRooms} phòng đã thuê`} tone="success" />
-          <StatCard icon={Eye} label="Lượt reach" value={stats.totalReach.toLocaleString('vi-VN')} trend="Ước tính từ tương tác" tone="info" />
-          <StatCard icon={CircleDollarSign} label="Giá thuê TB" value={formatPrice(stats.averageRent)} trend="Theo danh sách hiện tại" tone="warning" />
-        </div>
-
-        <div className="admin-grid">
-          <article className="admin-panel admin-panel--traffic">
-            <div className="admin-panel__header">
-              <div>
-                <span className="admin-panel__eyebrow"><BarChart3 size={15} /> Traffic Dashboard</span>
-                <h2>Lượt truy cập 7 ngày</h2>
-              </div>
-              <span className="admin-live"><Activity size={14} /> {stats.availableRooms + 8} online</span>
-            </div>
-            <div className="admin-chart" aria-label="Biểu đồ lượt truy cập 7 ngày">
-              {trafficData.map(item => (
-                <div className="admin-chart__item" key={item.label}>
-                  <div className="admin-chart__bar" style={{ height: `${Math.max((item.views / maxViews) * 100, 12)}%` }}>
-                    <span>{item.views.toLocaleString('vi-VN')}</span>
-                  </div>
-                  <strong>{item.label}</strong>
-                </div>
-              ))}
-            </div>
-            <div className="admin-device-split">
-              <span><Users size={15} /> Mobile 68%</span>
-              <span><Home size={15} /> Desktop 32%</span>
-            </div>
-          </article>
-
-          <article className="admin-panel admin-panel--editor">
-            <div className="admin-panel__header">
-              <div>
-                <span className="admin-panel__eyebrow"><Pencil size={15} /> Form nhanh</span>
-                <h2>{selectedRoom ? 'Chỉnh sửa phòng' : 'Chọn một phòng'}</h2>
-              </div>
-            </div>
-            {selectedRoom && (
-              <form className="admin-form">
-                <label>
-                  Tên phòng
-                  <input value={selectedRoom.title} readOnly />
-                </label>
-                <div className="admin-form__row">
-                  <label>
-                    Giá thuê
-                    <input value={selectedRoom.price.toLocaleString('vi-VN')} readOnly />
-                  </label>
-                  <label>
-                    Diện tích
-                    <input value={`${selectedRoom.area} m²`} readOnly />
-                  </label>
-                </div>
-                <label>
-                  Địa chỉ
-                  <textarea value={selectedRoom.address} readOnly />
-                </label>
-                <div className="admin-upload-box">
-                  <Upload size={20} />
-                  <span>Khu vực upload ảnh sẽ kết nối API ở bước backend.</span>
-                </div>
-              </form>
-            )}
-          </article>
-        </div>
-
-        <article className="admin-panel admin-panel--rooms">
-          <div className="admin-panel__header admin-panel__header--stacked">
+        <main className="admin-dashboard">
+          <section className="admin-hero-card">
             <div>
-              <span className="admin-panel__eyebrow"><BedDouble size={15} /> Room Management</span>
-              <h2>Danh sách phòng trọ</h2>
+              <p className="admin-kicker"><Activity size={14} /> Live operations</p>
+              <h2>Dashboard tổng quan</h2>
+              <p>Toàn bộ số liệu chính cho phòng, reach, user mới và CCU được gom về một màn hình theo chuẩn private admin.</p>
             </div>
-            <div className="admin-toolbar">
-              <div className="admin-search">
-                <Search size={16} />
-                <input
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Tìm theo tên hoặc địa chỉ..."
-                />
-              </div>
-              <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
-                {statusOptions.map(option => (
-                  <option key={option.value} value={option.value}>{option.label}</option>
-                ))}
-              </select>
-            </div>
-          </div>
+          </section>
 
-          <div className="admin-table-wrap">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Phòng</th>
-                  <th>Khu vực</th>
-                  <th>Giá thuê</th>
-                  <th>Trạng thái</th>
-                  <th>Đánh giá</th>
-                  <th>Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredRooms.map(room => (
-                  <tr key={room.id} className={selectedRoom?.id === room.id ? 'admin-table__row--active' : ''}>
-                    <td>
-                      <button className="admin-room" onClick={() => setSelectedRoomId(room.id)}>
-                        <img src={room.thumbnails?.[0] ?? room.images[0]} alt={room.title} />
-                        <span>
-                          <strong>{room.title}</strong>
-                          <small>{room.area} m² · Tầng {room.floor || '—'}</small>
-                        </span>
-                      </button>
-                    </td>
-                    <td><span className="admin-location"><MapPin size={14} /> {room.address}</span></td>
-                    <td>{formatPrice(room.price)}</td>
-                    <td><span className={`admin-status admin-status--${room.status}`}>{statusLabels[room.status] ?? room.status}</span></td>
-                    <td>{room.rating} ⭐ · {room.reviewCount}</td>
-                    <td>
-                      <div className="admin-actions">
-                        <button onClick={() => toggleRoomStatus(room.id)} title="Đổi trạng thái nhanh"><ToggleLeft size={17} /></button>
-                        <button onClick={() => setSelectedRoomId(room.id)} title="Sửa phòng"><Pencil size={17} /></button>
-                        <button onClick={() => hideRoom(room.id)} title="Ẩn bài"><Trash2 size={17} /></button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </article>
+          <section className="admin-stat-grid">
+            <StatCard icon={Building2} label="Tổng phòng" value={stats.totalRooms} note="Tất cả phòng" type="donut" percent={100} />
+            <StatCard icon={CheckCircle2} label="Phòng đã thuê" value={stats.rentedRooms} note="Tỷ lệ đã thuê" color="#10b981" type="donut" percent={stats.rentedRate} />
+            <StatCard icon={BedDouble} label="Phòng mới" value={stats.newRooms} note="Trong 30 ngày" color="#2563eb" series={[1, 2, 2, 3, 4, 4, stats.newRooms]} />
+            <StatCard icon={Eye} label="Lượt reach" value={stats.reach.toLocaleString('vi-VN')} note="Tổng tương tác" color="#d97706" series={trafficData.map(item => item.reach)} />
+            <StatCard icon={Users} label="User mới" value={stats.newUsers.toLocaleString('vi-VN')} note="7 ngày gần nhất" color="#7c3aed" series={trafficData.map(item => item.users)} />
+            <StatCard icon={Activity} label="CCU" value={stats.ccu} note="Đang online" color="#0f766e" series={trafficData.map(item => item.ccu)} />
+          </section>
+
+          <section className="admin-analytics-layout">
+            <article className="admin-card admin-card--line">
+              <div className="admin-card-heading"><div><p className="admin-kicker">Reach trend</p><h3>Biểu đồ lượt reach</h3></div><strong>{stats.reach.toLocaleString('vi-VN')}</strong></div>
+              <LineChart data={trafficData} />
+            </article>
+            <article className="admin-card admin-card--source">
+              <div className="admin-card-heading"><div><p className="admin-kicker">Source mix</p><h3>Nguồn traffic</h3></div></div>
+              <SourceDonut data={sourceData} />
+            </article>
+          </section>
+
+          <section className="admin-card admin-card--table">
+            <div className="admin-card-heading"><div><p className="admin-kicker">Traffic table</p><h3>Bảng Traffic</h3></div><span className="admin-live"><Activity size={14} /> {stats.ccu} CCU</span></div>
+            <div className="admin-table-scroll">
+              <table className="admin-traffic-table">
+                <thead><tr><th>Ngày</th><th>Lượt reach</th><th>User mới</th><th>CCU cao nhất</th><th>Nguồn chính</th><th>Conversion</th></tr></thead>
+                <tbody>
+                  {trafficData.map(item => <tr key={item.day}><td>{item.day}</td><td>{item.reach.toLocaleString('vi-VN')}</td><td>{item.users.toLocaleString('vi-VN')}</td><td>{item.ccu}</td><td>{item.source}</td><td>{item.conversion}%</td></tr>)}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </main>
       </section>
+
+      {sidebarOpen && <button className="admin-backdrop" onClick={() => setSidebarOpen(false)} aria-label="Đóng menu"><X size={18} /></button>}
     </div>
   )
 }
 
 export default function AdminPage() {
-  return (
-    <ProtectedAdmin>
-      <AdminPageContent />
-    </ProtectedAdmin>
-  )
+  return <ProtectedAdmin><AdminDashboard /></ProtectedAdmin>
 }
