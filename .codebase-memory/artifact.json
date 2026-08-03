@@ -1,0 +1,11 @@
+{
+    "schema_version": 2,
+    "commit": "b6b6f1d835cc189c1b20e5cb46a59d02a1e2262d",
+    "indexed_at": "2026-08-03T16:54:21Z",
+    "project": "Cheap_Accommodation",
+    "nodes": 389,
+    "edges": 513,
+    "original_size": 1572864,
+    "compressed_size": 190942,
+    "compression_level": 9
+}

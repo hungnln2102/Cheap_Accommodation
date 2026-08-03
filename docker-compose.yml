@@ -1,6 +1,6 @@
 services:
-  # Domain: room.mavrykpremium.com -> 8082 (frontend)
-  #         roomapi.mavrykpremium.com -> 3002 (backend)
+  # Domain: timtro247.com -> 8082 (frontend)
+  #         api.timtro247.com -> 3002 (backend)
   # ==========================================
   # 1. DATABASE SERVICE (PostgreSQL — DB MỚI, tách biệt admin_orderlist)
   # ==========================================
@@ -106,7 +106,7 @@ services:
       context: .
       dockerfile: Dockerfile.frontend
       args:
-        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://roomapi.mavrykpremium.com}
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.timtro247.com}
     restart: always
     depends_on:
       backend:
@@ -124,8 +124,8 @@ services:
 
 # ==========================================
 # Host Nginx (Unified — cùng VPS admin_orderlist):
-#   room.mavrykpremium.com     -> 8082 (frontend)
-#   roomapi.mavrykpremium.com  -> 3002 (backend)
+#   timtro247.com     -> 8082 (frontend)
+#   api.timtro247.com  -> 3002 (backend)
 # Xem: nginx/conf.d/cheap-accommodation.conf
 # ==========================================
 

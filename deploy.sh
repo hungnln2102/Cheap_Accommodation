@@ -25,7 +25,7 @@ REDIS_DB="${REDIS_DB:-0}"
 
 echo "======================================"
 echo "  Deploying Cheap Accommodation"
-echo "  Domain: room.mavrykpremium.com"
+echo "  Domain: timtro247.com"
 echo "======================================"
 echo ""
 
@@ -70,7 +70,7 @@ sleep 3
 echo ""
 echo "======================================"
 echo "  Deployment completed!"
-echo "  https://room.mavrykpremium.com"
+echo "  https://timtro247.com"
 echo "======================================"
 echo ""
 echo "Logs: ${DC[*]} logs -f"

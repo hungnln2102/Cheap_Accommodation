@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Home, Search, Menu, X, Moon, Sun, Phone, Heart, LogOut } from 'lucide-react'
+import { Home, Search, Menu, X, Moon, Sun, Phone, Heart, LogOut, LayoutDashboard } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { rooms } from '../../data/mockData'
 import './Header.css'
@@ -65,6 +65,9 @@ export default function Header() {
           <a href="tel:0901234567" className="header__link">
             <Phone size={16} /> Liên hệ
           </a>
+          <Link to="/admin" className={`header__link ${location.pathname.startsWith('/admin') ? 'header__link--active' : ''}`}>
+            <LayoutDashboard size={16} /> Quản lý
+          </Link>
         </nav>
 
         <div className="header__actions">

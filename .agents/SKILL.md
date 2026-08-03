@@ -56,8 +56,8 @@ const COLS  = ACCOMMODATION_SCHEMA.ROOMS.COLS;
 
 | Thành phần | Domain / Port Host | Port Container | Ghi chú |
 |---|---|---|---|
-| Frontend | `room.mavrykpremium.com` → `127.0.0.1:8082` | `:80` | React/Vite build |
-| Backend API | `roomapi.mavrykpremium.com` → `127.0.0.1:3002` | `:3002` | Node.js Express |
+| Frontend | `timtro247.com` → `127.0.0.1:8082` | `:80` | React/Vite build |
+| Backend API | `api.timtro247.com` → `127.0.0.1:3002` | `:3002` | Node.js Express |
 | PostgreSQL | `127.0.0.1:5433` | `:5432` | **DB MỚI** — không dùng chung admin_orderlist |
 | Redis | `127.0.0.1:6380` | `:6379` | Cache/Session mới |
 
@@ -81,7 +81,7 @@ cheap_accom-frontend    ← Nginx serving Vite build
 
 ### SSL
 
-Dùng chung wildcard cert `*.mavrykpremium.com` với `admin_orderlist`.
+Dùng chung wildcard cert `timtro247.com + www.timtro247.com + api.timtro247.com` với `admin_orderlist`.
 - `ssl_certificate /etc/nginx/ssl/fullchain.pem`
 - `ssl_certificate_key /etc/nginx/ssl/privkey.pem`
 

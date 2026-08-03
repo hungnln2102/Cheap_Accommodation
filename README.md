@@ -6,16 +6,16 @@ Hệ thống quản lý triển khai các dự án cho thuê phòng trọ tại 
 
 | Dịch vụ | URL |
 |---|---|
-| Frontend | https://room.mavrykpremium.com |
-| Backend API | https://roomapi.mavrykpremium.com |
+| Frontend | https://timtro247.com |
+| Backend API | https://api.timtro247.com |
 
 ## 🏗️ Kiến trúc
 
 ```
 Internet
   └─ Host Nginx (VPS — cùng với admin_orderlist)
-       ├─ room.mavrykpremium.com     → :8082 (frontend container)
-       └─ roomapi.mavrykpremium.com  → :3002 (backend container)
+       ├─ timtro247.com     → :8082 (frontend container)
+       └─ api.timtro247.com  → :3002 (backend container)
 
 Docker Compose:
   ├─ cheap_accom-postgres  (:5433) — PostgreSQL 16, DB: cheap_accom_db
