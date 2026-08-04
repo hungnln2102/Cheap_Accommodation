@@ -1,0 +1,204 @@
+- generic [ref=e48]:
+  - complementary [ref=e49]:
+    - generic [ref=e50]:
+      - generic [ref=e51]: PT
+      - generic [ref=e52]:
+        - strong [ref=e53]: Phòng Trọ Tốt
+        - generic [ref=e54]: Admin Console
+    - navigation "Điều hướng admin" [ref=e55]:
+      - button "Tổng quan" [ref=e56] [cursor=pointer]
+      - button "Phòng trọ" [ref=e59] [cursor=pointer]
+      - button "Khách thuê" [ref=e63] [cursor=pointer]
+      - button "Hợp đồng" [ref=e69] [cursor=pointer]
+      - button "Tin nhắn" [ref=e73] [cursor=pointer]
+      - button "Cài đặt" [ref=e76] [cursor=pointer]
+    - generic [ref=e80]: Dashboard chỉ số gọn cho đội vận hành.
+  - generic [ref=e84]:
+    - generic [ref=e85]:
+      - button "Mở menu" [ref=e86] [cursor=pointer]
+      - generic [ref=e88]:
+        - paragraph [ref=e89]: Analytics
+        - heading "Tổng quan chỉ số" [level=1] [ref=e90]
+      - generic [ref=e91]:
+        - textbox [ref=e96]:
+          - /placeholder: Tìm chỉ số, phòng, khách thuê...
+        - button "Thông báo" [ref=e97] [cursor=pointer]
+        - generic [ref=e101]:
+          - img "Nguyen Hung" [ref=e102]
+          - generic [ref=e103]: Nguyen Hung
+        - button "Đăng xuất" [ref=e104] [cursor=pointer]
+    - main [ref=e108]:
+      - region "Dashboard tabs" [ref=e109]:
+        - button "Tổng quan" [ref=e110] [cursor=pointer]
+        - button "Tài sản" [ref=e111] [cursor=pointer]
+      - generic [ref=e112]:
+        - article [ref=e113]:
+          - paragraph [ref=e115]: Tổng phòng
+          - strong [ref=e121]: "8"
+          - generic [ref=e122]: 7 còn trống
+        - article [ref=e127]:
+          - paragraph [ref=e129]: Đã thuê
+          - strong [ref=e134]: "1"
+          - generic [ref=e135]: 13% lấp đầy
+        - article [ref=e140]:
+          - paragraph [ref=e142]: Doanh thu
+          - strong [ref=e147]: 1.060.200 ₫
+          - generic [ref=e148]: "-18.2%"
+        - article [ref=e153]:
+          - paragraph [ref=e155]: Tổng nhập hàng
+          - strong [ref=e160]: 42.900.000 ₫
+          - generic [ref=e161]: +129.3%
+        - article [ref=e166]:
+          - paragraph [ref=e168]: Lợi nhuận tháng
+          - strong [ref=e172]: "-39.980 ₫"
+          - generic [ref=e173]: "-103.5%"
+        - article [ref=e178]:
+          - paragraph [ref=e180]: Hoàn tiền / Thuế
+          - strong [ref=e185]: 0 ₫
+          - generic [ref=e186]: 0.0%
+      - generic [ref=e191]:
+        - generic [ref=e192]:
+          - generic [ref=e193]:
+            - paragraph [ref=e194]: Tài chính theo tháng
+            - heading "Doanh thu, lợi nhuận, hoàn tiền và thuế" [level=3] [ref=e195]
+          - combobox "Chọn năm" [ref=e196]:
+            - option "2026" [selected]
+            - option "2025"
+        - generic [ref=e197]:
+          - generic [ref=e198]: Doanh thu
+          - generic [ref=e199]: Lợi nhuận
+          - generic [ref=e200]: Hoàn tiền
+          - generic [ref=e201]: Thuế
+        - img "Biểu đồ đường theo tháng" [ref=e202]:
+          - generic [ref=e203]: 21M
+          - generic [ref=e204]: 14M
+          - generic [ref=e205]: 7M
+          - generic [ref=e206]: "0"
+          - generic [ref=e207]: "-7M"
+          - generic [ref=e225]: T1
+          - generic [ref=e226]: T2
+          - generic [ref=e227]: T3
+          - generic [ref=e228]: T4
+          - generic [ref=e229]: T5
+          - generic [ref=e230]: T6
+          - generic [ref=e231]: T7
+          - generic [ref=e232]: T8
+      - generic [ref=e233]:
+        - article [ref=e234]:
+          - generic [ref=e236]:
+            - paragraph [ref=e237]: Đơn hàng theo tháng
+            - heading "Tổng đơn và đơn hủy theo tháng" [level=3] [ref=e238]
+            - generic [ref=e239]: So sánh số lượng đơn phát sinh và số đơn bị hủy trên cùng trục thời gian.
+          - generic [ref=e240]:
+            - generic [ref=e241]: Tổng đơn
+            - generic [ref=e242]: Đơn hủy
+          - img "Biểu đồ đơn hàng theo tháng" [ref=e243]:
+            - generic [ref=e244]: T1
+            - generic [ref=e246]: T2
+            - generic [ref=e248]: T3
+            - generic [ref=e250]: T4
+            - generic [ref=e254]: T5
+            - generic [ref=e258]: T6
+            - generic [ref=e260]: T7
+            - generic [ref=e264]: T8
+        - article [ref=e267]:
+          - generic [ref=e269]:
+            - paragraph [ref=e270]: Lưu lượng truy cập
+            - heading "116 pageviews · 64 visitors" [level=3] [ref=e271]
+          - generic [ref=e272]:
+            - article [ref=e273]:
+              - paragraph [ref=e275]: Tổng lượt xem
+              - strong [ref=e280]: "116"
+              - generic [ref=e281]: +0.0%
+            - article [ref=e286]:
+              - paragraph [ref=e288]: Khách truy cập
+              - strong [ref=e295]: "64"
+              - generic [ref=e296]: +0.0%
+            - article [ref=e301]:
+              - paragraph [ref=e303]: Thời gian TB
+              - strong [ref=e307]: 09m 20s
+              - generic [ref=e308]: +0.0%
+            - article [ref=e313]:
+              - paragraph [ref=e315]: Tỷ lệ thoát
+              - strong [ref=e319]: 37.1%
+              - generic [ref=e320]: "-0.0%"
+      - generic [ref=e325]:
+        - article [ref=e326]:
+          - generic [ref=e328]:
+            - paragraph [ref=e329]: Lưu lượng theo thời gian
+            - heading "Pageviews và unique visitors" [level=3] [ref=e330]
+          - img "Biểu đồ đường theo tháng" [ref=e331]:
+            - generic [ref=e332]: "28"
+            - generic [ref=e333]: "21"
+            - generic [ref=e334]: "14"
+            - generic [ref=e335]: "7"
+            - generic [ref=e336]: "0"
+            - generic [ref=e355]: 28/07
+            - generic [ref=e356]: 29/07
+            - generic [ref=e357]: 30/07
+            - generic [ref=e358]: 31/07
+            - generic [ref=e359]: 01/08
+            - generic [ref=e360]: 02/08
+            - generic [ref=e361]: 03/08
+            - generic [ref=e362]: 04/08
+        - article [ref=e363]:
+          - generic [ref=e365]:
+            - paragraph [ref=e366]: Nguồn truy cập
+            - heading "Source mix" [level=3] [ref=e367]
+          - generic [ref=e368]:
+            - generic [ref=e377]:
+              - strong [ref=e378]: "37"
+              - generic [ref=e379]: Visitors
+            - generic [ref=e380]:
+              - generic [ref=e381]:
+                - text: (direct)
+                - generic [ref=e383]: 48%
+              - generic [ref=e384]:
+                - text: google
+                - generic [ref=e386]: 22%
+              - generic [ref=e387]:
+                - text: zalo
+                - generic [ref=e389]: 14%
+              - generic [ref=e390]:
+                - text: facebook.com
+                - generic [ref=e392]: 9%
+              - generic [ref=e393]:
+                - text: (not set)
+                - generic [ref=e395]: 7%
+      - generic [ref=e396]:
+        - generic [ref=e398]:
+          - paragraph [ref=e399]: Các trang phổ biến nhất
+          - heading "Hiệu quả nội dung" [level=3] [ref=e400]
+        - table [ref=e402]:
+          - rowgroup [ref=e403]:
+            - row [ref=e404]:
+              - columnheader "Đường dẫn" [ref=e405]
+              - columnheader "Lượt xem" [ref=e406]
+              - columnheader "Time on page" [ref=e407]
+              - columnheader "Trend" [ref=e408]
+          - rowgroup [ref=e409]:
+            - row [ref=e410]:
+              - cell / [ref=e411]
+              - cell "37" [ref=e412]
+              - cell "22:02" [ref=e413]
+              - cell [ref=e414]
+            - row [ref=e416]:
+              - cell "/phong/phong-dep-may-lanh-phu-nhuan" [ref=e417]
+              - cell "23" [ref=e418]
+              - cell "02:45" [ref=e419]
+              - cell [ref=e420]
+            - row [ref=e422]:
+              - cell "/phong/can-ho-mini-quan-1" [ref=e423]
+              - cell "19" [ref=e424]
+              - cell "02:23" [ref=e425]
+              - cell [ref=e426]
+            - row [ref=e428]:
+              - cell "/admin" [ref=e429]
+              - cell "11" [ref=e430]
+              - cell "08:50" [ref=e431]
+              - cell [ref=e432]
+            - row [ref=e434]:
+              - cell "/login" [ref=e435]
+              - cell "8" [ref=e436]
+              - cell "01:56" [ref=e437]
+              - cell [ref=e438]

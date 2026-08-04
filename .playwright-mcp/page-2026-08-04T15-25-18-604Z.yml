@@ -1,0 +1,29 @@
+- main [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: PT
+      - generic [ref=e7]:
+        - strong [ref=e8]: Phòng Trọ Tốt Admin
+        - generic [ref=e9]: Private operations workspace
+    - paragraph [ref=e14]: Khu vực riêng tư
+    - heading "Đăng nhập để quản trị hệ thống" [level=1] [ref=e15]
+    - paragraph [ref=e16]: Theo dõi các chỉ số tài chính, đơn hàng, truy cập và hiệu quả vận hành trong một bảng điều khiển riêng.
+    - button "Đăng nhập quản trị" [active] [ref=e17] [cursor=pointer]
+  - generic [ref=e19]:
+    - button "Đóng" [ref=e20] [cursor=pointer]
+    - generic [ref=e24]:
+      - generic [ref=e25]: 🏠
+      - heading "Đăng nhập tài khoản" [level=2] [ref=e26]
+      - paragraph [ref=e27]: Đăng nhập để lưu tin yêu thích và viết đánh giá
+    - generic [ref=e28]:
+      - generic [ref=e29]:
+        - generic [ref=e30]: Tên đăng nhập / Email
+        - textbox "Nhập tên tài khoản..." [ref=e32]
+      - generic [ref=e33]:
+        - generic [ref=e34]: Mật khẩu
+        - textbox "Nhập mật khẩu..." [ref=e36]
+      - button "Đăng nhập" [ref=e37] [cursor=pointer]
+    - generic [ref=e38]: Hoặc đăng nhập nhanh bằng tài khoản thử nghiệm
+    - generic [ref=e39]:
+      - button "Nguyễn Hùng (Người thuê)" [ref=e40] [cursor=pointer]
+      - button "ThyThy (Môi giới)" [ref=e44] [cursor=pointer]
