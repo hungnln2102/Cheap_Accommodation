@@ -140,9 +140,9 @@ function MultiLineChart({ data, series, yLabels }) {
       {yLabels.map((label, index) => <text key={label} x={18} y={padY + index * ((height - padY * 2) / Math.max(yLabels.length - 1, 1)) + 4}>{label}</text>)}
       {series.map(line => {
         const points = data.map((item, index) => xFor(index) + ',' + yFor(item[line.key])).join(' ')
-        return <polyline key={line.key} points={points} fill="none" stroke={line.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        return <polyline key={line.key} points={points} fill="none" stroke={line.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       })}
-      {series.flatMap(line => data.map((item, index) => <circle key={line.key + item.label} cx={xFor(index)} cy={yFor(item[line.key])} r="4" fill={line.color} />))}
+      {series.flatMap(line => data.map((item, index) => <circle key={line.key + item.label} cx={xFor(index)} cy={yFor(item[line.key])} r="3" fill={line.color} />))}
       {data.map((item, index) => <text key={item.label} x={xFor(index)} y={height - 6} textAnchor="middle">{item.label}</text>)}
     </svg>
   )
